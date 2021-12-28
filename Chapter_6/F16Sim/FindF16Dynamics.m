@@ -108,8 +108,10 @@ SS_lat_lo.InputName= SS_lo.InputName(lat_inputs);
 %%%%%%%%%%%%%%%%
 
 
+A_OL_long = SS_long_lo.A([3 4 2 5 6 7],[3 4 2 5 6 7]);
+B_OL_long = SS_long_lo.B([3 4 2 5 6 7],[1 2]);
 
-
+A_OL_lat = SS_lat_lo.A([4 1 5 6 7 8], [4 1 5 6 7 8];
 
 
 
