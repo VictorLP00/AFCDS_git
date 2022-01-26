@@ -21,8 +21,8 @@ newline = sprintf('\n');
 %altitude = input('Enter the altitude for the simulation (ft)  :  ');
 %velocity = input('Enter the velocity for the simulation (ft/s):  ');
 
-altitude = 15000;
-velocity = 500;
+altitude = 20000;
+velocity = 300;
 g_D = 9.80665*3.2808399; %[ft/s^2]
 %x_a = 0;
 
@@ -152,7 +152,7 @@ Timespan = 0: 0.01: 400;
 %% 3.3
 
 Wnsp = 0.03*velocity *0.3048; % Natural frequency for the short period mode
-theta2a = 1/(0.75*Wnsp);        % Time constant 
+theta2 = 1/(0.75*Wnsp);        % Time constant 
 damp_sp = 0.5 ;                % Damping ratio of short period mode
 
 % Calculation of closed loop poles
@@ -174,8 +174,8 @@ TF_poleplacement = minreal(tf(SS_poleplacement));
 
 % Standard form --> Denominator = s^2 + 2*damping_ratio* natural frequency
 % * s + natural frequency^2 
-Wn = sqrt(denominator_pp(3));
-damp_new = denominator_pp(2)/(2*Wn);
+Wn_final = sqrt(denominator_pp(3));
+damp_final = denominator_pp(2)/(2*Wn_final);
 
 
 % Elevator deflection due to gusts
@@ -195,9 +195,9 @@ end
 Timespan = 0:0.01:5;
 
 % Create lead lag filter]
-theta2b = numerator_long(2, 2)/numerator_long(2, 3);
+theta2_final = numerator_long(2, 2)/numerator_long(2, 3);
 
-lead_lag_filter = tf([theta2a 1],[theta2b 1]);
+lead_lag_filter = tf([theta2 1],[theta2_final 1]);
 
 % Apply lead lag filter to system
 TF_final = minreal(TF_poleplacement*lead_lag_filter);
@@ -218,3 +218,31 @@ legend('pole placement without lead-lag filter', 'pole placement with lead-lag f
 xlabel('Time [s]')
 ylabel('Pitch rate q [deg/s]')
 hold off
+
+%%-----------------------------------------------------------
+% CAP calculation
+CAP = (Wn_final^2*theta2*g_D/velocity);
+design_CAP = (Wnsp^2*theta2*g_D/velocity);
+
+DB_qss = theta2 - (2*damp_final/Wn_final);
+
+% Simulate step input
+TF_step = tf(1,[1,0]);
+% Add step input to tf of system
+TF_DB = TF_step*TF_final(2);
+
+% Simulate step input and turn it off after a certain amount of time
+% Then determine DB after step input removal
+
+% End step input after half of the time
+switch1 = [ones(1,Timespan(end)/0.02), zeros(1,Timespan(end)/0.02+1)];
+DB_sim = lsim(-TF_DB,switch1,Timespan);
+normal_system = lsim(-TF_final(2),switch1,Timespan);
+
+figure
+plot(Timespan,normal_system,'b')
+hold
+plot(Timspan,U,'r')
+
+
+
