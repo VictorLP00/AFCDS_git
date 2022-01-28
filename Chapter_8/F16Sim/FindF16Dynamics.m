@@ -120,8 +120,9 @@ D_5 = SS_long_lo.D([1 2 3 4 5],[1 2]);
 ss_lon_5 = ss(A_5,B_5,C_5,D_5);
 
 % Set up GS
-GS_angle = 3*(pi/180); % GLide slope angle [deg]
+GS_angle = 3*(pi/180); % GLide slope angle [rad]
 runway_distance = 10*velocity + (2000/tan(GS_angle));
+runway_distance2 = (2000/tan(GS_angle));
 
 % Set up flare geometry
 x1 = 1100; %[ft]
@@ -131,6 +132,7 @@ h_flare = x2*tan(GS_angle);
 tau = -h_flare/h_dot;
 
 %sim GSandFlare
+
 
 
 
