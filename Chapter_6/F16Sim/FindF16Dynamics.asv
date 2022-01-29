@@ -150,9 +150,9 @@ for i=1:5
     end 
 
 end 
-T_half = -log(0.5)./(Damping.*Wn); %calculation of time to half damp amplitude
+T_half = -log(0.5)./(Damping.*Wn);
 %% Results
-Modes_= {'Short period'; 'Phughoid'; 'Dutch roll'; 'Aperiodic roll'; 'Spiral'};
+Modes_= {'Shortperiod'; 'Phughoid'; 'Dutchroll'; 'Aperiodicroll'; 'Spiral'};
 Parameters_={'Modes', 'Wn', 'Zeta', 'Period', 'Time to half',  'Timeconst'};
 values = [ Wn Damping Period T_half Timeconst];
 
