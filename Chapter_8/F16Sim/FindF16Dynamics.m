@@ -131,8 +131,77 @@ x2 = 6.5*velocity-x1; % Check if 2< vertical speed at touchdown <3
 h_flare = x2*tan(GS_angle);
 tau = -h_flare/h_dot;
 
-%sim GSandFlare
+sim GSandFlare_werkend
 
+%% Plotting of results
+alt_time = ans.Height_data.time;
+alt_data = ans.Height_data.signals.values(:,1);
+figure
+plot(alt_time,alt_data)
+xlabel('Time [s]')
+ylabel('Altitude [ft]')
+legend('Aircraft altitude over time')
+title('F16 landing procedure')
 
+figure
+n = length(alt_data(3760:4740));
+line = h_flare * ones(n)+ h_airport;
+airport_line = ones(n) + h_airport-1;
+plot(alt_time(3760:4740),alt_data(3760:4740));
+hold on
+plot(alt_time(3760:4740),line)
+hold on
+plot(alt_time(3760:4740),airport_line)
+xlabel('Time [s]')
+ylabel('Altitude [ft]')
+legend('Aircraft altitude over time','Start of flare manoeuvre altitude','Airport altitude')
+title('F16 flare manoeuvre')
+hold off
 
+Pitch_time = ans.Pitch_data.time;
+Pitch_data = ans.Pitch_data.signals.values(:,1);
+figure
+plot(Pitch_time,Pitch_data);
+xlabel('Time [s]')
+ylabel('Pitch angle [deg]')
+title('Pitch angle throughout landing procedure')
 
+Pitch_time = ans.Pitch_data.time;
+Pitch_data = ans.Pitch_data.signals.values(:,1);
+figure
+plot(Pitch_time,Pitch_data);
+xlabel('Time [s]')
+ylabel('Pitch angle [deg]')
+title('Pitch angle throughout landing procedure')
+
+Velocity_time = ans.Velocity_data.time;
+Velocity_data = ans.Velocity_data.signals.values(:,1);
+figure
+plot(Velocity_time,Velocity_data);
+xlabel('Time [s]')
+ylabel('True Airspeed [ft/s]')
+title('True Airspeed throughout landing procedure')
+
+AoA_time = ans.AoA_data.time;
+AoA_data = ans.AoA_data.signals.values(:,1);
+figure
+plot(AoA_time,AoA_data);
+xlabel('Time [s]')
+ylabel('Angle of Attack [deg]')
+title('Angle of Attack throughout landing procedure')
+
+Pitchrate_time = ans.Pitchrate_data.time;
+Pitchrate_data = ans.Pitchrate_data.signals.values(:,1);
+figure
+plot(Pitchrate_time,Pitchrate_data);
+xlabel('Time [s]')
+ylabel('Pitch rate [deg/s]')
+title('Pitch rate throughout landing procedure')
+
+GS_time = ans.GSerror_data.time;
+GS_error_data = ans.GSerror_data.signals.values(:,1);
+figure
+plot(GS_time,GS_error_data);
+xlabel('Time [s]')
+ylabel('Glide Slope error angle [deg]')
+title('Glide Sloper error angle throughout landing procedure')
